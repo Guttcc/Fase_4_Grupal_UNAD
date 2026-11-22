@@ -1,4 +1,5 @@
-# Este archivo define la clase Reserva que integra cliente, servicio, duración y estado, gestionando confirmación, cancelación y procesamiento con excepciones.
+# Este archivo define la clase Reserva que integra cliente, servicio, duración y estado, gestionando confirmación, cancelación, desglose financiero y procesamiento con excepciones.
+
 from exceptions import (
     CalculoCostoError,
     ReservaOperacionError,
@@ -67,6 +68,21 @@ class Reserva(Entidad):
     def monto_total(self) -> float:
         """Devuelve el monto total calculado de la reserva."""
         return self._monto_total
+
+    @property
+    def descuento_pct(self) -> float:
+        """Devuelve el porcentaje de descuento aplicado a la reserva."""
+        return self._descuento_pct
+
+    @property
+    def impuesto_pct(self) -> float:
+        """Devuelve el porcentaje de impuesto aplicado a la reserva."""
+        return self._impuesto_pct
+
+    @property
+    def extra(self) -> float:
+        """Devuelve el cargo adicional asociado a la reserva."""
+        return self._extra
 
     def confirmar(self) -> None:
         """Confirma la reserva verificando disponibilidad del servicio y estado actual."""
@@ -150,6 +166,35 @@ class Reserva(Entidad):
             return self._monto_total
         finally:
             logger.info(f"Ciclo de procesamiento cerrado para reserva {self.id} (estado: {self._estado}).")
+
+    def resumen_financiero(self) -> dict[str, float]:
+        """Calcula y devuelve el desglose de costos de la reserva con manejo de excepciones."""
+        try:
+            # Reutiliza la implementación polimórfica del servicio asignado
+            total = self._servicio.calcular_costo(
+                duracion=self._duracion,
+                descuento_pct=self._descuento_pct,
+                impuesto_pct=self._impuesto_pct,
+                extra=self._extra,
+            )
+            bruto = float(self._servicio.tarifa_base) * self._duracion + self._extra
+            ahorro_descuento = round(bruto * (self._descuento_pct / 100.0), 2)
+        except CalculoCostoError as exc:
+            logger.error(f"Error al generar desglose financiero de reserva {self.id}: {exc}")
+            raise ReservaOperacionError(
+                f"No se pudo calcular el desglose financiero de la reserva {self.id}."
+            ) from exc
+        else:
+            logger.info(f"Desglose financiero generado para reserva {self.id}: total={total:.2f}")
+            return {
+                "duracion": self._duracion,
+                "descuento_pct": self._descuento_pct,
+                "impuesto_pct": self._impuesto_pct,
+                "ahorro_descuento": ahorro_descuento,
+                "total": total,
+            }
+        finally:
+            logger.info(f"Consulta de resumen financiero finalizada para reserva {self.id}.")
 
     def describir(self) -> str:
         """Retorna un resumen del estado y detalle de la reserva."""
