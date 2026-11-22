@@ -1,0 +1,30 @@
+2026-11-22 13:31:23 | INFO | Sistema inicializado para Software FJ (modo en memoria, sin BD).
+2026-11-22 13:31:23 | INFO | Cliente registrado correctamente: Cliente [CLI-01] - Laura Mendoza | Doc: 12345678A | Correo: laura.mendoza@ejemplo.com | Tel: +34612345678
+2026-11-22 13:31:23 | ERROR | Error al registrar cliente 'CLI-02': [ERR_VALIDACION] El correo electrónico del cliente no tiene un formato válido.
+2026-11-22 13:31:23 | INFO | Cliente registrado correctamente: Cliente [CLI-03] - Valentina Gómez | Doc: 1098765432 | Correo: valentina.gomez@ejemplo.com | Tel: +573104567890
+2026-11-22 13:31:23 | INFO | Servicio registrado correctamente: Servicio Sala [SRV-SALA-1] - Sala de Conferencias Norte | Capacidad: 16 pax (con proyector) | Tarifa/h: 40.00 | Disponible
+2026-11-22 13:31:23 | INFO | Servicio registrado correctamente: Servicio Equipo [SRV-EQ-1] - Kit Audio y Micrófonos Inalámbricos | Unidades: 4 (requiere fianza) | Tarifa/día: 25.00 | Disponible
+2026-11-22 13:31:23 | INFO | Servicio registrado correctamente: Servicio Asesoría [SRV-ASE-1] - Asesoría Arquitectura y Seguridad | Área: Ingeniería de Software (Remota/Presencial) | Tarifa/h: 60.00 | Disponible
+2026-11-22 13:31:23 | INFO | Servicio registrado correctamente: Servicio Equipo [SRV-EQ-OFF] - Estación Workstation Render | Unidades: 2 (requiere fianza) | Tarifa/día: 80.00 | No disponible
+2026-11-22 13:31:23 | INFO | Cotización calculada para servicio 'SRV-SALA-1' (duración=3, desc=10.0%, imp=21.0%, extra=20.0): 201.47
+2026-11-22 13:31:23 | INFO | Reserva creada en estado PENDIENTE: Reserva [RES-01] | Estado: PENDIENTE | Cliente: Laura Mendoza | Servicio: Sala de Conferencias Norte | Duración: 2.0 | Total: 0.00
+2026-11-22 13:31:23 | INFO | Reserva RES-01 confirmada para cliente CLI-01.
+2026-11-22 13:31:23 | INFO | Intento de confirmación finalizado en reserva RES-01 (estado actual: CONFIRMADA).
+2026-11-22 13:31:23 | INFO | Reserva RES-01 procesada con éxito. Cliente: CLI-01, Servicio: SRV-SALA-1, Total: 114.95
+2026-11-22 13:31:23 | INFO | Ciclo de procesamiento cerrado para reserva RES-01 (estado: PROCESADA).
+2026-11-22 13:31:23 | INFO | Reserva creada en estado PENDIENTE: Reserva [RES-02] | Estado: PENDIENTE | Cliente: Valentina Gómez | Servicio: Asesoría Arquitectura y Seguridad | Duración: 4.0 | Total: 0.00
+2026-11-22 13:31:23 | INFO | Reserva RES-02 confirmada para cliente CLI-03.
+2026-11-22 13:31:23 | INFO | Intento de confirmación finalizado en reserva RES-02 (estado actual: CONFIRMADA).
+2026-11-22 13:31:23 | INFO | Reserva RES-02 procesada con éxito. Cliente: CLI-03, Servicio: SRV-ASE-1, Total: 240.00
+2026-11-22 13:31:23 | INFO | Ciclo de procesamiento cerrado para reserva RES-02 (estado: PROCESADA).
+2026-11-22 13:31:23 | ERROR | Error al crear reserva 'RES-03': [ERR_SERVICIO_NO_DISPONIBLE] El servicio 'Estación Workstation Render' (SRV-EQ-OFF) no está disponible para nuevas reservas.
+2026-11-22 13:31:23 | INFO | Reserva creada en estado PENDIENTE: Reserva [RES-04] | Estado: PENDIENTE | Cliente: Valentina Gómez | Servicio: Kit Audio y Micrófonos Inalámbricos | Duración: 3.0 | Total: 0.00
+2026-11-22 13:31:23 | INFO | Reserva RES-04 cancelada. Motivo: Cambio de fecha del cliente
+2026-11-22 13:31:23 | INFO | Intento de cancelación finalizado en reserva RES-04 (estado actual: CANCELADA).
+2026-11-22 13:31:23 | INFO | Ciclo de procesamiento cerrado para reserva RES-04 (estado: CANCELADA).
+2026-11-22 13:31:23 | INFO | Reserva creada en estado PENDIENTE: Reserva [RES-05] | Estado: PENDIENTE | Cliente: Laura Mendoza | Servicio: Sala de Conferencias Norte | Duración: 2.0 | Total: 0.00
+2026-11-22 13:31:23 | INFO | Reserva RES-05 confirmada para cliente CLI-01.
+2026-11-22 13:31:23 | INFO | Intento de confirmación finalizado en reserva RES-05 (estado actual: CONFIRMADA).
+2026-11-22 13:31:23 | ERROR | Error de cálculo al procesar reserva RES-05: [ERR_CALCULO_COSTO] El porcentaje de descuento debe estar entre 0 y 99.9.
+2026-11-22 13:31:23 | INFO | Ciclo de procesamiento cerrado para reserva RES-05 (estado: CONFIRMADA).
+2026-11-22 13:31:23 | INFO | Simulación de 12 operaciones finalizada correctamente.
