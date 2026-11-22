@@ -1,4 +1,5 @@
 # Este archivo define la clase GestorSoftwareFJ para administrar clientes, servicios y reservas en listas en memoria sin base de datos, registrando eventos y errores en logs.
+
 from exceptions import (
     CalculoCostoError,
     ReservaOperacionError,
@@ -104,6 +105,13 @@ class GestorSoftwareFJ:
                 return servicio
         raise ServicioNoDisponibleError(f"Servicio con ID '{id_servicio}' no encontrado en el catálogo.")
 
+    def buscar_reserva(self, id_reserva: str) -> Reserva:
+        """Busca una reserva por ID o lanza ReservaOperacionError si no existe."""
+        for reserva in self._reservas:
+            if reserva.id == id_reserva:
+                return reserva
+        raise ReservaOperacionError(f"Reserva con ID '{id_reserva}' no encontrada.")
+
     def crear_reserva(
         self,
         id_reserva: str,
@@ -146,6 +154,28 @@ class GestorSoftwareFJ:
             self._reservas.append(reserva)
             logger.info(f"Reserva creada en estado PENDIENTE: {reserva.describir()}")
             return reserva
+
+    def cancelar_reserva(self, id_reserva: str, motivo: str = "Cancelación solicitada") -> None:
+        """Localiza y cancela una reserva existente registrando el resultado en el log."""
+        try:
+            # Verifica primero que el ID exista en la lista de reservas en memoria
+            reserva = self.buscar_reserva(id_reserva)
+            reserva.cancelar(motivo)
+        except ReservaOperacionError as exc:
+            logger.error(f"No se pudo cancelar la reserva '{id_reserva}': {exc}")
+            raise
+        else:
+            logger.info(f"Cancelación tramitada desde gestor para reserva '{id_reserva}'.")
+
+    def listar_reservas_por_estado(self, estado: str) -> list[Reserva]:
+        """Devuelve las reservas que coinciden con un estado válido del sistema."""
+        estado_normalizado = estado.strip().upper() if isinstance(estado, str) else ""
+        if estado_normalizado not in Reserva.ESTADOS_VALIDOS:
+            logger.warning(f"Consulta de reservas con estado inválido: '{estado}'")
+            raise ValidacionError(
+                f"Estado '{estado}' no válido. Use uno de: {', '.join(Reserva.ESTADOS_VALIDOS)}."
+            )
+        return [r for r in self._reservas if r.estado == estado_normalizado]
 
     def calcular_cotizacion(
         self,
